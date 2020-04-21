@@ -1,3 +1,9 @@
-public class Stock implements Serializable{
+
+
+public class Stock {
+	
 	
 }
+
+
+
