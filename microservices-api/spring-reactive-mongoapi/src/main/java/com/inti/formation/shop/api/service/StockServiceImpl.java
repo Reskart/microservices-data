@@ -27,20 +27,16 @@ public class StockServiceImpl implements StockService{
 	private StockRepository stockRepository;
 	
 	@Override
-	public Mono<Stock> add(Stock s) {
-		
+	public Mono<Stock> add(final Stock s) {
 		return stockRepository.save(s);
 	}
 
 	@Override
-	public Flux<Stock> searchDate(Date d) {
+	public Flux<Stock> searchDate(final Date d) {
 		
 		return stockRepository.findByDate(d);
 	}
 
-
-
-	
 
 	@Override
 	public Mono<Stock> update(final Stock s) {
