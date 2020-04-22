@@ -13,8 +13,8 @@ import lombok.Data;
  */
 
 // Exemple: idStock = 5, quantite= 68, magasin = « MAG1", active= true,
-// idproduct = 1, date = "2020-05-08T01:01:00.001+01:00" (format:
-// yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ) 
+// idproduct = 1, date = "2020-05-08T01:01:00.001+01:00" 
+//(format: yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ) 
 
 
 @Data

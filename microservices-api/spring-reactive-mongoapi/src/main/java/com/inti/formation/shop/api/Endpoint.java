@@ -3,10 +3,14 @@ package com.inti.formation.shop.api;
 
 
 import com.inti.formation.shop.api.repository.model.Customer;
+import com.inti.formation.shop.api.repository.model.Stock;
 import com.inti.formation.shop.api.rest.bean.CustomerRequest;
+import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
 import com.inti.formation.shop.api.rest.exception.ValidationParameterException;
 import com.inti.formation.shop.api.service.CustomerService;
+import com.inti.formation.shop.api.service.StockService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -23,6 +27,8 @@ import reactor.core.publisher.Mono;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.status;
 
+import java.util.Date;
+
 
 
 @RestController
@@ -33,6 +39,9 @@ import static org.springframework.http.ResponseEntity.status;
 public class Endpoint {
     @Autowired
     CustomerService customerService;
+    
+    @Autowired
+    StockService stockService;
 
     @ExceptionHandler(ValidationParameterException.class)
     public Mono<ResponseEntity<String>> handlerValidationParameterException(ValidationParameterException e) {
@@ -44,47 +53,69 @@ public class Endpoint {
     public Mono<ResponseEntity<String>> handlerInternalServerException() {
         return Mono.just(status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal error server has occurred "));
     }
+    
+    
 
-    @PostMapping(value = "/register" , headers = "Accept=application/json; charset=utf-8")
-    @ResponseStatus( value  = HttpStatus.CREATED, reason="Customer is registered" )
-    public Mono<String> create(@RequestBody CustomerRequest customer) {
-        // Vérification des paramètres
-        if( ObjectUtils.anyNotNull(customer)  && !ObjectUtils.allNotNull(customer.getEmail(),customer.getName(), customer.getFirstname() )){
-            log.error("Validation error: one of attributes is not found");
-            return Mono.error(new ValidationParameterException("(Validation error message): one of attributes is not found" ));
-        }
-        return Mono.just(customer)
-        .map(data->
-                {
-
-                    return customerService.register( data).subscribe().toString();
-
-                });
+    
+    @PostMapping(value="/add", headers="Accept=application/json; charset=utf-8")
+    @ResponseStatus(value=HttpStatus.CREATED, reason="Stock has been registered!")
+    public Mono<String> create(@RequestBody Stock s){
+    	return Mono.just(s).map(data->{
+    		return stockService.add(data).subscribe().toString();
+    	});
     }
-
+    
+    
     @GetMapping
-    @RequestMapping(value = "/customers{customername}")
-
-    public Flux<Customer> getCustomers(@RequestParam(required = true, name = "customername") String customername ) {
-        log.info("Searching  {} ",customername );
-        return customerService.searchName(customername)
-
-                // uses of doNext
-
-                .doOnNext(customer -> log.info(customer.getEmail()+ " is found"));
-
+    @RequestMapping(value="/stock{d}")
+    public Flux<Stock> findByDate(@RequestParam(required = true, name = "d")Date d){
+		return stockService.searchDate(d);
+    	
     }
+//
+//    @PostMapping(value = "/register" , headers = "Accept=application/json; charset=utf-8")
+//    @ResponseStatus( value  = HttpStatus.CREATED, reason="Customer is registered" )
+//    public Mono<String> create(@RequestBody CustomerRequest customer) {
+//        // Vérification des paramètres
+//        if( ObjectUtils.anyNotNull(customer)  && !ObjectUtils.allNotNull(customer.getEmail(),customer.getName(), customer.getFirstname() )){
+//            log.error("Validation error: one of attributes is not found");
+//            return Mono.error(new ValidationParameterException("(Validation error message): one of attributes is not found" ));
+//        }
+//        return Mono.just(customer)
+//        .map(data->
+//                {
+//
+//                    return customerService.register( data).subscribe().toString();
+//
+//                });
+//    }
+//
+//    @GetMapping
+//    @RequestMapping(value = "/customers{customername}")
+//
+//    public Flux<Customer> getCustomers(@RequestParam(required = true, name = "customername") String customername ) {
+//        log.info("Searching  {} ",customername );
+//        return customerService.searchName(customername)
+//
+//                // uses of doNext
+//
+//                .doOnNext(customer -> log.info(customer.getEmail()+ " is found"));
+//
+//    }
+//
+//
+//
+//    @GetMapping
+//    @RequestMapping(value = "/customers/")
+//    public Flux<Customer> getCustomers() {
+//        log.info("All customers searching");
+//      return customerService.getCustomers()
+//              // uses of map
+//                .switchIfEmpty(Flux.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+//                .map( data-> data);
+//    }
 
 
 
-    @GetMapping
-    @RequestMapping(value = "/customers/")
-    public Flux<Customer> getCustomers() {
-        log.info("All customers searching");
-      return customerService.getCustomers()
-              // uses of map
-                .switchIfEmpty(Flux.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                .map( data-> data);
-    }
 }
 
