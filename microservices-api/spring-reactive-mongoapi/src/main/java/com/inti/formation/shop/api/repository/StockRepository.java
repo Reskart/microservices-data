@@ -1,5 +1,9 @@
 package com.inti.formation.shop.api.repository;
 
-public interface StockRepository {
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+
+import com.inti.formation.shop.api.repository.model.Stock;
+
+public interface StockRepository extends ReactiveMongoRepository<Stock, String>{
 
 }
