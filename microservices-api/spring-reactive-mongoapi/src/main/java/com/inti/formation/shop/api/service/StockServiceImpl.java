@@ -8,37 +8,48 @@ import org.springframework.stereotype.Component;
 import com.inti.formation.shop.api.repository.StockRepository;
 import com.inti.formation.shop.api.repository.model.Stock;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+
+/**
+ * @author Antoine Bertin, Marion Gloriant
+ */
+
 @Component
+@Slf4j
 public class StockServiceImpl implements StockService{
 	
-	@Autowired
-	private StockRepository rep;
 
+
+	@Autowired
+	private StockRepository stockRepository;
+	
 	@Override
 	public Mono<Stock> add(Stock s) {
 		
-		return rep.save(s);
+		return stockRepository.save(s);
 	}
 
 	@Override
 	public Flux<Stock> searchDate(Date d) {
 		
-		return rep.findByDate(d);
+		return stockRepository.findByDate(d);
 	}
 
+
+
+	
+
 	@Override
-	public Mono<Stock> update(Stock s) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<Stock> update(final Stock s) {
+		return stockRepository.save(s);
 	}
 
 	@Override
 	public Flux<Stock> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return stockRepository.findAll();
 	}
 
 }
