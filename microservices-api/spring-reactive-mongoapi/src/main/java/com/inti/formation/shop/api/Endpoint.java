@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -68,9 +69,8 @@ public class Endpoint {
     
     @GetMapping
     @RequestMapping(value="/stock{d}")
-    public Flux<Stock> findByDate(@RequestParam(required = true, name = "d")Date d){
+    public Flux<Stock> findByDate(@RequestParam(required = true, name = "date")@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ") Date d){
 		return stockService.searchDate(d);
-    	
     }
 //
 //    @PostMapping(value = "/register" , headers = "Accept=application/json; charset=utf-8")
