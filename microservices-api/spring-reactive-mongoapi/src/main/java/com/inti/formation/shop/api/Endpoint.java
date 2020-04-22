@@ -2,9 +2,7 @@ package com.inti.formation.shop.api;
 
 
 
-import com.inti.formation.shop.api.repository.model.Customer;
 import com.inti.formation.shop.api.repository.model.Stock;
-import com.inti.formation.shop.api.rest.bean.CustomerRequest;
 import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
 import com.inti.formation.shop.api.rest.exception.ValidationParameterException;
@@ -72,10 +70,18 @@ public class Endpoint {
 //                });
 //    }
 
+    @PostMapping(value="/add", headers="Accept=application/json; charset=utf-8")
+    @ResponseStatus(value=HttpStatus.CREATED, reason="Stock has been registered!")
+    public Mono<String> create(@RequestBody StockRequest s){
+        return Mono.just(s).map(data->{
+            return stockService.add(data).subscribe().toString();
+        });
+    }
+    
     @GetMapping
-    @RequestMapping(value="/stock{d}")
-    public Flux<Stock> findByDate(@RequestParam(required = true, name = "date")@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ") Date d){
-		return stockService.searchDate(d);
+    @RequestMapping(value="/stock")
+    public Flux<Stock> findByDate(@RequestParam(required = true, name = "date")@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ") Date date){
+		return stockService.searchDate(date);
     }
 
 //    @RequestMapping(value = "/customers{customername}")
