@@ -2,11 +2,16 @@ package com.inti.formation.shop.api.service;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.inti.formation.shop.api.repository.model.Stock;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Component
+@Slf4j
 public class StockServiceImpl implements StockService{
 
 	@Override

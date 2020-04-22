@@ -7,6 +7,10 @@ import com.inti.formation.shop.api.repository.model.Stock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author Antoine Bertin
+ */
+
 public interface StockService {
 	
 	public Mono<Stock> add(Stock s);
