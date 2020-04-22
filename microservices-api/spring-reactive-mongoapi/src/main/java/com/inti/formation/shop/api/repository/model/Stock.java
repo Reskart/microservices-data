@@ -22,9 +22,6 @@ import lombok.Data;
 
 public class Stock implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	@Id
 	private Long idStock;
@@ -33,10 +30,6 @@ public class Stock implements Serializable{
 	private boolean active;
 	private long idProduct; 
 	public Date date; // note : L'import java.util.Date ne se fait pas lorsque la classe est "private" Oo
-	
-	
-	
-	
 	
 }
 
