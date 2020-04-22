@@ -25,8 +25,7 @@ public class StockServiceImpl implements StockService{
 	
 	@Override
 	public Mono<Stock> add(final Stock s) {
-		// TODO Auto-generated method stub
-		return null;
+		return stockRepository.save(s);
 	}
 
 	@Override

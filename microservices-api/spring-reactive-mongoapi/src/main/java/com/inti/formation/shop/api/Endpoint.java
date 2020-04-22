@@ -3,10 +3,14 @@ package com.inti.formation.shop.api;
 
 
 import com.inti.formation.shop.api.repository.model.Customer;
+import com.inti.formation.shop.api.repository.model.Stock;
 import com.inti.formation.shop.api.rest.bean.CustomerRequest;
+import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
 import com.inti.formation.shop.api.rest.exception.ValidationParameterException;
 import com.inti.formation.shop.api.service.CustomerService;
+import com.inti.formation.shop.api.service.StockService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -33,6 +37,9 @@ import static org.springframework.http.ResponseEntity.status;
 public class Endpoint {
     @Autowired
     CustomerService customerService;
+    
+    @Autowired
+    StockService stockService;
 
     @ExceptionHandler(ValidationParameterException.class)
     public Mono<ResponseEntity<String>> handlerValidationParameterException(ValidationParameterException e) {
@@ -86,5 +93,56 @@ public class Endpoint {
                 .switchIfEmpty(Flux.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map( data-> data);
     }
+    
+    @GetMapping
+    @RequestMapping(value = "/stocks/")
+    public Flux<Stock> getStocks() {
+    	log.info("All stocks searching");
+    	return stockService.findAll()
+    			.switchIfEmpty(Flux.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+    			.map(data -> data);
+    }
+    
+    @PutMapping(value = "/update" , headers = "Accept=application/json; charset=utf-8")
+    @ResponseStatus( value  = HttpStatus.CREATED, reason="Stock is updated" )
+    public Mono<String> updateStock(@RequestBody StockRequest stock){
+    	if( ObjectUtils.anyNotNull(stock)  && !ObjectUtils.allNotNull(stock.getDate(), stock.getIdProduct(), stock.getIdStock(), stock.getMagasin(), stock.getQte() )){
+            log.error("Validation error: one of attributes is not found");
+            return Mono.error(new ValidationParameterException("(Validation error message): one of attributes is not found" ));
+        }
+		return Mono.just(stock)
+				.map(data-> {
+					
+					return stockService.update( data).subscribe().toString();
+				});
+    }
+					
+	@PostMapping(value = "/createStock" , headers = "Accept=application/json; charset=utf-8")
+	@ResponseStatus( value  = HttpStatus.CREATED, reason="Customer is registered" )
+	public Mono<String> createStock(@RequestBody StockRequest stock) {
+	        // Vérification des paramètres
+		if( ObjectUtils.anyNotNull(stock)  && !ObjectUtils.allNotNull(stock.getDate(), stock.getIdProduct(), stock.getIdStock(), stock.getMagasin(), stock.getQte() )){
+	            log.error("Validation error: one of attributes is not found");
+	            return Mono.error(new ValidationParameterException("(Validation error message): one of attributes is not found" ));
+	        }
+	        return Mono.just(stock)
+	        .map(data->
+	                {
+
+	                    return stockService.add( data).subscribe().toString();
+
+	                });
+	    }
+	
+    @PostMapping(value="/add", headers="Accept=application/json; charset=utf-8")
+    @ResponseStatus(value=HttpStatus.CREATED, reason="Stock has been registered!")
+    public Mono<String> create(@RequestBody StockRequest s){
+        return Mono.just(s).map(data->{
+            return stockService.add(data).subscribe().toString();
+        });
+    }
+						
+    	
+    
 }
 
