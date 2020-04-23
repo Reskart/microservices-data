@@ -80,7 +80,8 @@ public class Endpoint {
     
     @GetMapping
     @RequestMapping(value="/stock")
-    public Flux<Stock> findByDate(@RequestParam(required = true, name = "date") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXXX") Date date){
+    public Flux<Stock> findByDate(@RequestParam(required = true, name = "date") @DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") Date date){
+
 		return stockService.searchDate(date);
     }
 
