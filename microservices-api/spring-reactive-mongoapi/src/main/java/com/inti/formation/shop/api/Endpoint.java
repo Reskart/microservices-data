@@ -27,6 +27,7 @@ import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.status;
 
 import java.util.Date;
+import java.util.List;
 
 
 
@@ -84,6 +85,8 @@ public class Endpoint {
 
 		return stockService.searchDate(date);
     }
+    
+
 
 //    @RequestMapping(value = "/customers{customername}")
 //    public Flux<Customer> getCustomers(@RequestParam(required = true, name = "customername") String customername ) {
