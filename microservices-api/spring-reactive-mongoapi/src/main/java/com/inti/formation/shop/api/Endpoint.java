@@ -4,7 +4,6 @@ import com.inti.formation.shop.api.repository.model.Stock;
 import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
 import com.inti.formation.shop.api.rest.exception.ValidationParameterException;
-import com.inti.formation.shop.api.service.CustomerService;
 import com.inti.formation.shop.api.service.StockService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.status;
 
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,7 +61,7 @@ public class Endpoint {
     
     @GetMapping
     @RequestMapping(value="/stock")
-    public Flux<Stock> findActiveStockByDate(@RequestParam(required = true, name = "date") @DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") Date date){
+    public Flux<Stock> findActiveStockSinceDate(@RequestParam(required = true, name = "date") @DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") Date date){
 
 		return stockService.searchActiveSinceDate(date);
     }
