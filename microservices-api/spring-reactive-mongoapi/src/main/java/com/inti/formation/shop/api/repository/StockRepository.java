@@ -12,8 +12,7 @@ import reactor.core.publisher.Flux;
 public interface StockRepository extends ReactiveMongoRepository<Stock, Long>{
 
 	@Query("{ 'date' : {$gte:?0},'active':true }")
-	Flux<Stock> findByDate(Date date);
+	Flux<Stock> findActiveStockSinceDate(Date date);
 	
-	Flux<Stock> findByActiveAndDate(boolean active, Date date);
 
 }

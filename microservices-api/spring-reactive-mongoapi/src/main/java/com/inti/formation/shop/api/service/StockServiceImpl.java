@@ -32,9 +32,9 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public Flux<Stock> searchDate(final Date d) {
+	public Flux<Stock> searchActiveSinceDate(final Date d) {
 		
-		return stockRepository.findByDate(d);
+		return stockRepository.findActiveStockSinceDate(d);
 	}
 
 

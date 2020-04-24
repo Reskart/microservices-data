@@ -15,7 +15,7 @@ public interface StockService {
 	
 	public Mono<Stock> add(Stock s);
 	
-	public Flux<Stock> searchDate(Date d);
+	public Flux<Stock> searchActiveSinceDate(Date d);
 	
 	public Mono<Stock> update(Stock s);
 	
