@@ -1,75 +1,88 @@
-package com.inti.formation.shop.api;
+package com.inti.formation.data.kafka.producer;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+import com.inti.formation.data.kafka.producer.serde.JsonPOJOSerializer;
+import com.inti.formation.shop.api.repository.model.Stock;
+
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.inti.formation.data.kafka.producer.ApplicationProducer;
-import com.inti.formation.data.kafka.producer.serde.JsonPOJOSerializer;
-import com.inti.formation.shop.api.repository.model.Stock;
 
-@SpringBootConfiguration
-@Configuration
+
+/**
+ * 
+ * @author Sylvanius Kouandongui
+ *
+ */
 @EnableAutoConfiguration
+@SpringBootApplication
 @ComponentScan
-@EnableReactiveMongoRepositories // activation de spring mongo reactive
-public class ApplicationShop {
-		@Value("${kafka.bootstrap-server}")
-	    private String kafkaBrokerUrl;
+@Configuration
+@EnableScheduling
+public class ApplicationProducer {
 
-	    @Value("${kafka.acks}")
-	    private String acks;
+    @Value("${kafka.bootstrap-server}")
+    private String kafkaBrokerUrl;
 
-	    @Value("${kafka.retries}")
-	    private String retries;
+    @Value("${kafka.acks}")
+    private String acks;
 
-	    @Value("${kafka.buffer-memory}")
-	    private String bufferMemory;
+    @Value("${kafka.retries}")
+    private String retries;
 
-	    @Value("${kafka.batch-size}")
-	    private String batchSize;
+    @Value("${kafka.buffer-memory}")
+    private String bufferMemory;
 
-	    @Value("${kafka.client-id}")
-	    private String clientId;
+    @Value("${kafka.batch-size}")
+    private String batchSize;
 
-	    @Value("${kafka.compression-type}")
-	    private String compressionType;
+    @Value("${kafka.client-id}")
+    private String clientId;
 
-	    @Value("${kafka.user}")
-	    private String user;
+    @Value("${kafka.compression-type}")
+    private String compressionType;
 
-	    @Value("${kafka.password}")
-	    private String password;
+    @Value("${kafka.user}")
+    private String user;
 
-	    private static final String SECURITY_PROTOCOL = "security.protocol";
-	    private static final String SASL_MECHANISM = "sasl.mechanism";
-	    private static final String SASL_JAAS_CONFIG = "sasl.jaas.config";
+    @Value("${kafka.password}")
+    private String password;
 
-	
+    private static final String SECURITY_PROTOCOL = "security.protocol";
+    private static final String SASL_MECHANISM = "sasl.mechanism";
+    private static final String SASL_JAAS_CONFIG = "sasl.jaas.config";
+
+    /**
+     * start the application
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationShop.class, args);
+	    SpringApplication.run(ApplicationProducer.class, args);
 
     }
+
+    // Kafka configuration
     @Bean
     public Map<String, Object> producerConfigs() {
 	Map<String, Object> conf = new HashMap<>();
 	conf.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBrokerUrl);
-	conf.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+	conf.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 	conf.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonPOJOSerializer.class.getName());
 	// If the request fails, the producer can automatically retry,
 	conf.put(ProducerConfig.RETRIES_CONFIG, retries);
@@ -90,7 +103,7 @@ public class ApplicationShop {
 
     @Bean
     public ProducerFactory<Long, Stock> producerFactory() {
-	return new DefaultKafkaProducerFactory<>(producerConfigs()); 
+	return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,10 +23,12 @@ import java.util.Random;
  */
 @Slf4j
 @Component
+@EnableConfigurationProperties
+@EnableAutoConfiguration
 public class ProducerBuilder {
 
-    @Value("${kafka.topic-name}")
-    private String TOPIC;
+//    @Value("${kafka.topic-name}")
+    private String TOPIC="stock-v1";
 
     @Autowired
     private KafkaTemplate<Long, Stock> kafkaTemplate;
@@ -32,12 +36,14 @@ public class ProducerBuilder {
     @Value("${kafka.compression-type}")
     private String compressionType;
 
+    
+    
+
     //milliseconds
-//    @Scheduled(fixedDelayString = "${schedule-time}")
-//    public void scheduleFixedDelayTask() {
-//        ProducerRecord<String, Stock> producerRecord = new ProducerRecord<>(TOPIC, event.getIdProduit(),
-//                event);
-//	    kafkaTemplate.send(producerRecord);
-//    }
+    
+    public void sendK(Stock s) {
+        ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, s.getIdStock(), s);
+	    kafkaTemplate.send(producerRecord);
+    }
 
 }

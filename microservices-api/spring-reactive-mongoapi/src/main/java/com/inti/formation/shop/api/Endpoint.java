@@ -1,5 +1,6 @@
 package com.inti.formation.shop.api;
 
+import com.inti.formation.data.kafka.producer.producer.ProducerBuilder;
 import com.inti.formation.shop.api.repository.model.Stock;
 import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
@@ -9,12 +10,13 @@ import com.inti.formation.shop.api.service.StockService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -31,6 +33,22 @@ import java.util.Date;
 @Slf4j
 // Controller , Roote
 public class Endpoint {
+	
+
+//	ProducerBuilder prod = new ProducerBuilder();
+	
+	@Value("${kafka.topic-name}")
+    private String TOPIC;
+
+    @Autowired
+    private KafkaTemplate<Long, Stock> kafkaTemplate;
+
+    @Value("${kafka.compression-type}")
+    private String compressionType;
+
+	
+	
+	
 	
 //    @Autowired
 //    CustomerService customerService;
@@ -92,7 +110,10 @@ public class Endpoint {
     }
     
     @DeleteMapping(value = "/delete", headers = "Accept=application/json; charset=utf-8")
-    public Mono<Void> deleteStock(@RequestBody StockRequest stock){
+    public Mono<Void> deleteStock(@RequestBody Stock stock){
+        ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, stock.getIdStock(), stock);
+	    kafkaTemplate.send(producerRecord);
+//    	prod.sendK(stock);
     	
     	return stockService.delete(stock);
     }
