@@ -48,4 +48,10 @@ public class StockServiceImpl implements StockService{
 		return stockRepository.findAll();
 	}
 
+
+	@Override
+	public Mono<Void> delete(Stock s) {
+		return stockRepository.delete(s);
+	}
+
 }

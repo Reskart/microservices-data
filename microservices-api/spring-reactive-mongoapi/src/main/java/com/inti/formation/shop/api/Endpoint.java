@@ -91,6 +91,12 @@ public class Endpoint {
 				});
     }
     
+    @DeleteMapping(value = "/delete", headers = "Accept=application/json; charset=utf-8")
+    public Mono<Void> deleteStock(@RequestBody StockRequest stock){
+    	
+    	return stockService.delete(stock);
+    }
+    
 					
 //  @PostMapping(value = "/register" , headers = "Accept=application/json; charset=utf-8")
 //  @ResponseStatus( value  = HttpStatus.CREATED, reason="Customer is registered" )

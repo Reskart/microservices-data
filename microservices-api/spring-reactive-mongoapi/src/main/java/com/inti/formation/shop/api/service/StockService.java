@@ -20,5 +20,7 @@ public interface StockService {
 	public Mono<Stock> update(Stock s);
 	
 	public Flux<Stock> findAll();
+	
+	public Mono<Void> delete(Stock s);
 
 }
