@@ -32,7 +32,7 @@ public class Stock implements Serializable{
 	private long idProduct;
 	@DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 	public Date date; // note : L'import java.util.Date ne se fait pas lorsque la classe est "private" Oo
-//	public Date dateSuppression;
+	public String dateSuppression;
 }
 
 

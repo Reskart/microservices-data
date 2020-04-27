@@ -25,6 +25,8 @@ import reactor.core.publisher.Mono;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.status;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -46,7 +48,10 @@ public class Endpoint {
     @Value("${kafka.compression-type}")
     private String compressionType;
 
-	
+    public void sendK(Stock stock) {
+        ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, stock.getIdStock(), stock);
+	    kafkaTemplate.send(producerRecord);
+    }
 	
 	
 	
@@ -111,10 +116,12 @@ public class Endpoint {
     
     @DeleteMapping(value = "/delete", headers = "Accept=application/json; charset=utf-8")
     public Mono<Void> deleteStock(@RequestBody Stock stock){
-        ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, stock.getIdStock(), stock);
-	    kafkaTemplate.send(producerRecord);
+	    DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	    Date date = new Date();
+    	stock.setDateSuppression(format.format(date));
+    	sendK(stock);
 //    	prod.sendK(stock);
-    	
+
     	return stockService.delete(stock);
     }
     
