@@ -8,3 +8,16 @@ spring:
       database: DataBaseProject
 server:
  port: 8080
+ 
+kafka:
+  bootstrap-server: localhost:29092
+  acks: all
+  retries: 22785
+  batch-size: 131072
+  buffer-memory: 80000000
+  client-id: producerEvent
+  idempotence: true
+  compression-type: lz4
+  topic-name: stock-v1
+  user: producer-user
+  password: producer-pwd
