@@ -52,6 +52,14 @@ public class Endpoint {
         ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, stock.getIdStock(), stock);
 	    kafkaTemplate.send(producerRecord);
     }
+    
+    public String dayDate() {
+    	
+    	DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	    Date date = new Date();
+	    return format.format(date);
+    	
+    }
 	
 	
 	
@@ -116,9 +124,8 @@ public class Endpoint {
     
     @DeleteMapping(value = "/delete", headers = "Accept=application/json; charset=utf-8")
     public Mono<Void> deleteStock(@RequestBody Stock stock){
-	    DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	    Date date = new Date();
-    	stock.setDateSuppression(format.format(date));
+
+    	stock.setDateSuppression(dayDate());
     	sendK(stock);
 //    	prod.sendK(stock);
 
