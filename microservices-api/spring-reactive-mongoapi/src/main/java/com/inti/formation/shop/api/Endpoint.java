@@ -53,12 +53,10 @@ public class Endpoint {
 	    kafkaTemplate.send(producerRecord);
     }
     
-    public String dayDate() {
-    	
+    public String dayDate() {	
     	DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	    Date date = new Date();
 	    return format.format(date);
-    	
     }
 	
 	
