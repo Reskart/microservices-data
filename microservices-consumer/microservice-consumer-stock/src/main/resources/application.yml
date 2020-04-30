@@ -1,0 +1,15 @@
+kafka:
+  boot-server: localhost:29092
+  topic-name: stock-v1
+  consumer-group-id: microservice-consumer-stock-groupId
+  client-id: microservice-consumer-stock
+server:
+  port: 8082
+  
+spring:
+  application:
+    name: sample-spring-elasticsearch
+  data:
+    elasticsearch:
+      cluster-name:
+      cluster-nodes:
