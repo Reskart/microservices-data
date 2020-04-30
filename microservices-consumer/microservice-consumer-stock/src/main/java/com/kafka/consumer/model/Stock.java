@@ -19,7 +19,7 @@ import lombok.Data;
 // idproduct = 1, date = "2020-05-08T01:01:00.001+01:00" 
 //(format: yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ) 
 
-@Document(indexName="projet", type="stock")
+@Document(indexName="shop", type="stock")
 @Data
 public class Stock{
 	
