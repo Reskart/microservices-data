@@ -7,7 +7,7 @@ import com.kafka.consumer.model.Stock;
 import java.util.List;
 
 @Repository
-public interface StockRepository extends ElasticsearchCrudRepository<Long, Stock> {
+public interface StockRepository extends ElasticsearchCrudRepository<Stock, Long> {
 
 	
 }
