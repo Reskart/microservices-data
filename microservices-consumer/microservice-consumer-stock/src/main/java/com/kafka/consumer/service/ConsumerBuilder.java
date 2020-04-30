@@ -13,12 +13,12 @@ import com.kafka.consumer.model.Stock;
 @Slf4j
 public class ConsumerBuilder {
 	
-	@Autowired
-	private StockService sS;
+@Autowired
+private StockService stockService;
 
 	@KafkaListener(topics = "${kafka.topic-name}", groupId = "${kafka.consumer-group-id}")
 	public void consume(Stock stock) {
 		log.info("Stock readed " + stock.toString() );
-		sS.add(stock);
+		stockService.add(stock);
 	}
 }

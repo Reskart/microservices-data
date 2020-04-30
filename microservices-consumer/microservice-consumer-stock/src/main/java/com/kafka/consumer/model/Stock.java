@@ -1,6 +1,6 @@
 package com.kafka.consumer.model;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -21,9 +21,9 @@ import lombok.Data;
 
 @Document(indexName="projet", type="stock")
 @Data
-public class Stock implements Serializable{
+public class Stock{
 	
-	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Field(type=FieldType.Long)
 	private Long idStock;

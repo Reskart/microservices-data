@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-rective-mongoapi
+    name: spring-reative-mongoapi
 
   data:
     mongodb:

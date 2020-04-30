@@ -11,5 +11,5 @@ spring:
     name: sample-spring-elasticsearch
   data:
     elasticsearch:
-      cluster-name:
-      cluster-nodes:
+      cluster-name: tp-elastic
+      cluster-nodes: localhost:9300
