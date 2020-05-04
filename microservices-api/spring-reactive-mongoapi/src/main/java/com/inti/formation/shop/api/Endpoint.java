@@ -134,25 +134,28 @@ public class Endpoint {
 //    	prod.sendK(stock);
 
     	
-
-
+    	sendK(stock);
     	
-    	return Mono.just(stock).flatMap(data->
-    	{
-    		return stockService.delete(data);
-    	}
-    			).
+    	return stockService.delete(stock);
     			
     	
     	
     }
     
-    @DeleteMapping(value="/deleteById")
-    public Mono<Void> deleteStockById(@RequestParam(name = "id") Long id){
-//    	Stock stock = stockService.findById(id).block();
-    	return stockService.deleteById(id).doOnNext(data->
-    	sendK(stockService.findById(id).block()));
-    }
+//    @DeleteMapping(value="/deleteById")
+//    public Mono<String> deleteStockById(@RequestParam(name = "id") Long id){
+//          stockService.findById(id).subscribe(data ->{
+//        	  stockService.deleteById(data.getIdStock());
+//        	  sendK(data);
+//        	  
+//          }
+//        		  
+//        		  
+//        		  );
+//          return Mono.just("") ;
+//    	return stockService.deleteById(id).doOnNext(data->
+//    	sendK(stockService.findById(id).block()));
+//    }
     
 					
 //  @PostMapping(value = "/register" , headers = "Accept=application/json; charset=utf-8")
