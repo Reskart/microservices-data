@@ -54,4 +54,16 @@ public class StockServiceImpl implements StockService{
 		return stockRepository.delete(s);
 	}
 
+	@Override
+	public Mono<Void> deleteById(Long id) {
+	
+		return stockRepository.deleteById(id);
+	}
+
+	@Override
+	public Mono<Stock> findById(Long id) {
+		
+		return stockRepository.findById(id);
+	}
+
 }

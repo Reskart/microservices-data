@@ -22,5 +22,9 @@ public interface StockService {
 	public Flux<Stock> findAll();
 	
 	public Mono<Void> delete(Stock s);
+	
+	public Mono<Void> deleteById(Long id);
+	
+	public Mono<Stock> findById(Long id);
 
 }

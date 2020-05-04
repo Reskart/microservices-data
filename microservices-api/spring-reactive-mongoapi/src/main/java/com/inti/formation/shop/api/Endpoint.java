@@ -1,6 +1,7 @@
 package com.inti.formation.shop.api;
 
 import com.inti.formation.data.kafka.producer.producer.ProducerBuilder;
+import com.inti.formation.shop.api.repository.StockRepository;
 import com.inti.formation.shop.api.repository.model.Stock;
 import com.inti.formation.shop.api.rest.bean.StockRequest;
 import com.inti.formation.shop.api.rest.exception.InternalServerException;
@@ -41,6 +42,9 @@ public class Endpoint {
 	
 	@Value("${kafka.topic-name}")
     private String TOPIC;
+	
+	@Autowired
+	private StockRepository stockRepository;
 
     @Autowired
     private KafkaTemplate<Long, Stock> kafkaTemplate;
@@ -52,6 +56,8 @@ public class Endpoint {
         ProducerRecord<Long, Stock> producerRecord = new ProducerRecord<>(TOPIC, stock.getIdStock(), stock);
 	    kafkaTemplate.send(producerRecord);
     }
+    
+
     
     public String dayDate() {	
     	DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -132,6 +138,13 @@ public class Endpoint {
     	sendK(stock));
     	
     	
+    }
+    
+    @DeleteMapping(value="/deleteById")
+    public Mono<Void> deleteStockById(@RequestParam(name = "id") Long id){
+//    	Stock stock = stockService.findById(id).block();
+    	return stockService.deleteById(id).doOnNext(data->
+    	sendK(stockService.findById(id).block()));
     }
     
 					
