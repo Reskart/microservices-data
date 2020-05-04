@@ -124,10 +124,15 @@ public class Endpoint {
     public Mono<Void> deleteStock(@RequestBody Stock stock){
 
     	stock.setDateSuppression(dayDate());
-    	sendK(stock);
+    	
 //    	prod.sendK(stock);
 
-    	return stockService.delete(stock);
+    	
+    	sendK(stock);
+    	return stockService.delete(stock).doOnNext(data ->
+    	sendK(stock));
+    	
+    	
     }
     
 					
