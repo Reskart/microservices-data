@@ -134,8 +134,15 @@ public class Endpoint {
 //    	prod.sendK(stock);
 
     	
-    	return stockService.delete(stock).doOnNext(data ->
-    	sendK(stock));
+
+
+    	
+    	return Mono.just(stock).flatMap(data->
+    	{
+    		return stockService.delete(data);
+    	}
+    			).
+    			
     	
     	
     }
