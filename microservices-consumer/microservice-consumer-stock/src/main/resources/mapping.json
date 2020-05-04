@@ -1,0 +1,28 @@
+
+{
+        "mappings": {
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "date"
+                },
+                "dateSuppression": {
+                    "type": "text"
+                },
+                "idProduct": {
+                    "type": "long"
+                },
+                "idStock": {
+                    "type": "keyword"
+                },
+                "magasin": {
+                    "type": "text"
+                },
+                "qte": {
+                    "type": "integer"
+                }
+            }
+        }
+    }

@@ -18,6 +18,6 @@ kafka:
   client-id: producerEvent
   idempotence: true
   compression-type: lz4
-  topic-name: stock-v1
+  topic-name: deleted-stock-v1
   user: producer-user
   password: producer-pwd

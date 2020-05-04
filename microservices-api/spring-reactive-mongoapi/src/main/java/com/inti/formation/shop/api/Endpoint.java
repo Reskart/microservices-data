@@ -128,7 +128,6 @@ public class Endpoint {
 //    	prod.sendK(stock);
 
     	
-    	sendK(stock);
     	return stockService.delete(stock).doOnNext(data ->
     	sendK(stock));
     	
