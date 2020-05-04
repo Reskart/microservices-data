@@ -1,11 +1,11 @@
 version: "3"
 services:
-  springreactivemongoapi:
+  consumerstock:
     #network_mode: "host"
-    image: "microservice-stock-api:latest"
+    image: "microservice-consumer-stock:latest"
     environment:
       SERVER_PORT: 8085
-      SPRING_APPLICATION_NAME: spring-reactive-mongoapi
+      SPRING_APPLICATION_NAME: consumer-stock
       SPRING_URI: localhost:27017,mongodb://localhost:27017
       SPRING_DATABASE: dbtest # base mongo
       SPRING_REPOSITORY_ENABLE: 'true'
