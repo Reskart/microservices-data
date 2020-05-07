@@ -1,0 +1,21 @@
+camel:
+  springboot:
+    name: etl-apache-camel
+
+server:
+  port: 0
+
+# IN
+in:
+  directory: C:\Users\IN-LL-030\Desktop\projet2\data # dossier de dépot de fichier
+  file:
+    filemask: .*.[json|JSON]
+
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017,localhost:27017
+      database: DataBaseProject
+
+
